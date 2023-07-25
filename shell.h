@@ -13,10 +13,12 @@
 #include <signal.h>
 #include <limits.h>
 
-define MAX_COMMAND_LENGHT 100
+#define MAX_COMMAND_LENGHT 100
 
 void display_prompt(void);
 int read_command(char *cmd);
+char **tokenize_command(char *cmd);
 void execute_command(char *cmd);
+void handle_command_line_arguments(int argc, char *argv[]);
 
 #endif

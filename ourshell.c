@@ -15,6 +15,37 @@
 void display_prompt(void);
 int read_command(char *cmd);
 void execute_command(char *cmd);
+void handle_command_line_arguments(int argc, char *argv[]);
+
+/**
+ * handle_command_line_arguments - Handle command line arguments for the shell.
+ * @argc: The argument count.
+ * @argv: An array of strings containing the command line arguments.
+ *
+ * Return: None.
+ */
+void handle_command_line_arguments(int argc, char *argv[])
+{
+/* Handle command line arguments for the shell */
+for (int i = 1; i < argc; i++)
+{
+if (access(argv[i], F_OK) == 0)
+{
+/* Process the option (e.g., display help, set flags, etc.) */
+/* For this example, we will just print the option */
+write(STDOUT_FILENO, "Option: ", 8);
+write(STDOUT_FILENO, argv[i], strlen(argv[i]));
+write(STDOUT_FILENO, "\n", 1);
+}
+else
+{
+/* Handle the case when the option is not recognized */
+write(STDOUT_FILENO, "Unknown option: ", 16);
+write(STDOUT_FILENO, argv[i], strlen(argv[i]));
+write(STDOUT_FILENO, "\n", 1);
+}
+}
+}
 
 /**
  * main - Entry point for the simple shell program.

@@ -1,3 +1,4 @@
+#include "shell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,21 +27,19 @@ void execute_command(char *cmd);
 
 int main(int argc, char *argv[])
 {
+handle_command_line_arguments(argc, argv);
+
 char cmd[MAX_COMMAND_LENGTH];
 
 while (1)
 {
-/* Display the prompt */
 display_prompt();
 
-/* Read the user input */
 if (read_command(cmd) == 0)
 {
-/* If read_command returns 0, it means the user entered Ctrl+D (EOF) */
 write(STDOUT_FILENO, "Exiting shell\n", 14);
 break;
 }
-/* Execute the command */
 execute_command(cmd);
 }
 
