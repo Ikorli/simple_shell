@@ -1,3 +1,4 @@
+#include "shell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,8 +27,10 @@ void handle_command_line_arguments(int argc, char *argv[]);
  */
 void handle_command_line_arguments(int argc, char *argv[])
 {
+int i;
+
 /* Handle command line arguments for the shell */
-for (int i = 1; i < argc; i++)
+for (i = 1; i < argc; i++)
 {
 if (access(argv[i], F_OK) == 0)
 {
@@ -56,7 +59,8 @@ write(STDOUT_FILENO, "\n", 1);
  */
 int main(int argc, char *argv[])
 {
-	char cmd[MAX_COMMAND_LENGTH];
+handle_command_line_arguments(argc, argv);
+
 
 	while (1)
 	{
@@ -64,6 +68,7 @@ int main(int argc, char *argv[])
 		display_prompt();
 
 		/* Read the user input */
+		char cmd[MAX_COMMAND_LENGHT];
 		if (read_command(cmd) == 0)
 		{
 			/* If read_command returns 0, it means the user entered Ctrl+D (EOF) */
