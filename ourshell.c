@@ -59,6 +59,8 @@ write(STDOUT_FILENO, "\n", 1);
  */
 int main(int argc, char *argv[])
 {
+	char cmd[MAX_COMMAND_LENGTH];
+
 handle_command_line_arguments(argc, argv);
 
 
@@ -68,7 +70,6 @@ handle_command_line_arguments(argc, argv);
 		display_prompt();
 
 		/* Read the user input */
-		char cmd[MAX_COMMAND_LENGHT];
 		if (read_command(cmd) == 0)
 		{
 			/* If read_command returns 0, it means the user entered Ctrl+D (EOF) */
