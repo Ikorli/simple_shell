@@ -18,35 +18,6 @@ int read_command(char *cmd);
 void execute_command(char *cmd);
 
 /**
- * main - Entry point for the simple shell program.
- * @argc: The argument count used.
- * @argv: An array of stings containing the command line arguments unused.
- *
- * Return: Always 0.
- */
-
-int main(int argc, char *argv[])
-{
-handle_command_line_arguments(argc, argv);
-
-char cmd[MAX_COMMAND_LENGTH];
-
-while (1)
-{
-display_prompt();
-
-if (read_command(cmd) == 0)
-{
-write(STDOUT_FILENO, "Exiting shell\n", 14);
-break;
-}
-execute_command(cmd);
-}
-
-return (0);
-}
-
-/**
  * display_prompt -  Function to display the prompt.
  */
 
