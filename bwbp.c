@@ -3,20 +3,17 @@
 /**
  * main - Entry point for the program
  *
- * This function serves as the entry point for the program.
- * It prompts the user to enter their name, reads the input,
- * and prints a personalized greeting.
+ * This function adds 1 and 2 and prints the result.
  *
- * Return: 0 on successful execution, non-zero otherwise
+ * Return: Always 0 (indicating success)
  */
-int main(void)
+int numbers(void)
 {
-char name[100];
+/* Declare a variable to store the result of 1 + 2 */
+int result = 1 + 2;
 
-write("What is your name? ");
-getline("%s", name);
-
-write("Hello, %s!\n", name);
+/* Print the result of the addition */
+printf("1 + 2 = %d\n", result);
 
 return (0);
 }
