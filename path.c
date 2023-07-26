@@ -22,7 +22,7 @@ char *get_command_path(char *command);
 
 /**
  * get_command_path - Function to get the full path of a command.
- * @command: The command for which to find the path.
+ * @command: The command for which to find the command path.
  *
  * Return: Pointer to the path of the command, or NULL if not found.
  */
