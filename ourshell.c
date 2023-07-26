@@ -17,6 +17,7 @@ void display_prompt(void);
 int read_command(char *cmd);
 void execute_command(char *cmd);
 void handle_command_line_arguments(int argc, char *argv[]);
+void exit_shell(void);
 
 /**
  * handle_command_line_arguments - Handle command line arguments for the shell.
@@ -112,13 +113,31 @@ int read_command(char *cmd)
 }
 
 /**
+ * exit_shell - Exits the shell.
+ */
+void exit_shell(void)
+{
+	/* exits the shell */
+	exit(EXIT_SUCCESS);
+}
+
+/**
  * execute_command - Function to execute the command.
  * @cmd: The command to be executed.
  */
 void execute_command(char *cmd)
 {
+	pid_t pid;
+
+	/* check if the command is the "exit" built-in */
+	if (strcmp(cmd, "exit") == 0)
+	{
+		write(STDOUT_FILENO, "Exiting shell\n", 14);
+		exit(0);
+	}
+
 	/* Fork a new process to execute the command */
-	pid_t pid = fork();
+	pid = fork();
 
 	if (pid < 0)
 	{

@@ -20,5 +20,6 @@ int read_command(char *cmd);
 char **tokenize_command(char *cmd);
 void execute_command(char *cmd);
 void handle_command_line_arguments(int argc, char *argv[]);
+void exit_shell(void);
 
 #endif
