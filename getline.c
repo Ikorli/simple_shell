@@ -5,6 +5,10 @@
 
 #define BUFFER_SIZE 1024
 
+/* Function prototypes */
+static int read_input(char *buffer, int size);
+static char *process_input(const char *buffer, int size);
+
 /**
  * our_getline - Read a line of input from the user.
  *
@@ -16,30 +20,16 @@ static char buffer[BUFFER_SIZE];
 static int buffer_pos;
 static int buffer_size;
 
-char *line = NULL;
-int line_pos = 0;
-
 while (1)
 {
 /* Read more data into the buffer if needed*/
 if (buffer_pos >= buffer_size)
 {
-buffer_size = read(STDIN_FILENO, buffer, BUFFER_SIZE);
+buffer_size = read_input(buffer, BUFFER_SIZE);
 if (buffer_size <= 0)
 {
 /* Error or end of file*/
-if (line_pos > 0)
-{
-/* Return the last line if there is any*/
-line = realloc(line, line_pos + 1);
-if (line == NULL)
-{
-perror("realloc");
-exit(EXIT_FAILURE);
-}
-line[line_pos] = '\0';
-}
-return (line);
+return (process_input(buffer, buffer_pos));
 }
 buffer_pos = 0;
 }
@@ -51,28 +41,57 @@ char ch = buffer[buffer_pos++];
 if (ch == '\n')
 {
 /* Found the end of the line, return the line*/
-line = realloc(line, line_pos + 1);
-if (line == NULL)
+return (process_input(buffer, buffer_pos));
+}
+}
+}
+}
+
+/**
+ * read_input - Read data from stdin into the buffer.
+ *
+ * @buffer: The buffer to store the read data.
+ * @size: The size of the buffer.
+ *
+ * Return: Number of bytes read.
+ */
+static int read_input(char *buffer, int size)
 {
-perror("realloc");
+int bytes_read = read(STDIN_FILENO, buffer, size);
+if (bytes_read < 0)
+{
+perror("read");
 exit(EXIT_FAILURE);
 }
-line[line_pos] = '\0';
+return (bytes_read);
+}
+
+/**
+ * process_input - Process the input buffer and return the line.
+ *
+ * @buffer: The input buffer.
+ * @size: The size of the buffer.
+ *
+ * Return: Pointer to the line.
+ */
+static char *process_input(const char *buffer, int size)
+{
+char *line = malloc(size + 1);
+if (line == NULL)
+{
+perror("malloc");
+exit(EXIT_FAILURE);
+}
+memcpy(line, buffer, size);
+line[size] = '\0';
 return (line);
 }
 
-/* Append the character to the line*/
-line = realloc(line, line_pos + 1);
-if (line == NULL)
-{
-perror("realloc");
-exit(EXIT_FAILURE);
-}
-line[line_pos++] = ch;
-}
-}
-}
-
+/**
+ * main - Entry point of the program.
+ *
+ * Return: Always 0.
+ */
 int great(void)
 {
 char *line;
@@ -86,3 +105,4 @@ free(line);
 
 return (0);
 }
+
