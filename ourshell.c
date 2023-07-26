@@ -18,6 +18,7 @@ int read_command(char *cmd);
 void execute_command(char *cmd);
 void handle_command_line_arguments(int argc, char *argv[]);
 void exit_shell(void);
+void print_environment(void);
 
 /**
  * handle_command_line_arguments - Handle command line arguments for the shell.
@@ -122,6 +123,22 @@ void exit_shell(void)
 }
 
 /**
+ * print_environment - Function to print the current environment.
+ */
+void print_environment(void)
+{
+    extern char **environ;
+    char **env = environ;
+
+    while (*env != NULL)
+    {
+        write(STDOUT_FILENO, *env, strlen(*env));
+        write(STDOUT_FILENO, "\n", 1);
+        env++;
+    }
+}
+
+/**
  * execute_command - Function to execute the command.
  * @cmd: The command to be executed.
  */
@@ -135,7 +152,11 @@ void execute_command(char *cmd)
 		write(STDOUT_FILENO, "Exiting shell\n", 14);
 		exit(0);
 	}
-
+	else if (strcmp(cmd, "env") == 0)
+	{
+		print_environment();
+	}
+	else
 	/* Fork a new process to execute the command */
 	pid = fork();
 
