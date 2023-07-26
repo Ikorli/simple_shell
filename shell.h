@@ -22,5 +22,6 @@ void execute_command(char *cmd);
 void handle_command_line_arguments(int argc, char *argv[]);
 void exit_shell(void);
 void print_environment(void);
+char *get_command_path(char *command);
 
 #endif

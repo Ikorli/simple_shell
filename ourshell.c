@@ -19,6 +19,7 @@ void execute_command(char *cmd);
 void handle_command_line_arguments(int argc, char *argv[]);
 void exit_shell(void);
 void print_environment(void);
+char *get_command_path(char *command);
 
 /**
  * handle_command_line_arguments - Handle command line arguments for the shell.
@@ -157,6 +158,27 @@ void execute_command(char *cmd)
 		print_environment();
 	}
 	else
+	{
+		char *full_path;
+
+        /* Check if the command exists in the current directory */
+        if (access(cmd, X_OK) == 0)
+        {
+            full_path = cmd;
+        }
+        else
+        {
+            /* Get the full path of the command using the PATH */
+            full_path = get_command_path(cmd);
+
+            if (full_path == NULL)
+            {
+                /* Command not found */
+                write(STDOUT_FILENO, "Command not found\n", 18);
+                return;
+            }
+        }
+
 	/* Fork a new process to execute the command */
 	pid = fork();
 
@@ -202,6 +224,9 @@ void execute_command(char *cmd)
 		int status;
 
 		waitpid(pid, &status, 0);
+
+		if (full_path != cmd)
+			free(full_path);
 	}
 }
 
