@@ -145,21 +145,21 @@ void print_environment(void)
  */
 void execute_command(char *cmd)
 {
-	pid_t pid;
+    pid_t pid;
 
-	/* check if the command is the "exit" built-in */
-	if (strcmp(cmd, "exit") == 0)
-	{
-		write(STDOUT_FILENO, "Exiting shell\n", 14);
-		exit(0);
-	}
-	else if (strcmp(cmd, "env") == 0)
-	{
-		print_environment();
-	}
-	else
-	{
-		char *full_path;
+    /* check if the command is the "exit" built-in */
+    if (strcmp(cmd, "exit") == 0)
+    {
+        write(STDOUT_FILENO, "Exiting shell\n", 14);
+        exit(0);
+    }
+    else if (strcmp(cmd, "env") == 0)
+    {
+        print_environment();
+    }
+    else
+    {
+        char *full_path;
 
         /* Check if the command exists in the current directory */
         if (access(cmd, X_OK) == 0)
@@ -179,54 +179,54 @@ void execute_command(char *cmd)
             }
         }
 
-	/* Fork a new process to execute the command */
-	pid = fork();
+        /* Fork a new process to execute the command */
+        pid = fork();
 
-	if (pid < 0)
-	{
-		/* Fork failed */
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0)
-	{
-		/* Child process */
+        if (pid < 0)
+        {
+            /* Fork failed */
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
+        else if (pid == 0)
+        {
+            /* Child process */
 
-		/* Tokenize the command to get the program name and arguments */
-		char *token = strtok(cmd, " ");
-		char *argv[MAX_COMMAND_LENGTH];
-		int i = 0;
+            /* Tokenize the command to get the program name and arguments */
+            char *token = strtok(cmd, " ");
+            char *argv[MAX_COMMAND_LENGTH];
+            int i = 0;
 
-		while (token != NULL)
-		{
-			argv[i++] = token;
-			token = strtok(NULL, " ");
-		}
-		argv[i] = NULL;
+            while (token != NULL)
+            {
+                argv[i++] = token;
+                token = strtok(NULL, " ");
+            }
+            argv[i] = NULL;
 
-		/* Execute the command using execvp */
-		if (access(argv[0], X_OK) == 0)
-		{
-			execvp(argv[0], argv);
-		}
-		else
-		{
-			/* If access returns non-zero, the command was not found */
-			write(STDOUT_FILENO, "Command not found\n", 18);
-			exit(EXIT_FAILURE);
-		}
-	}
-	else
-	{
-		/* Parent process */
+            /* Execute the command using execvp */
+            if (access(argv[0], X_OK) == 0)
+            {
+                execvp(argv[0], argv);
+            }
+            else
+            {
+                /* If access returns non-zero, the command was not found */
+                write(STDOUT_FILENO, "Command not found\n", 18);
+                exit(EXIT_FAILURE);
+            }
+        }
+        else
+        {
+            /* Parent process */
 
-		/* Wait for the child process to complete */
-		int status;
+            /* Wait for the child process to complete */
+            int status;
 
-		waitpid(pid, &status, 0);
+            waitpid(pid, &status, 0);
 
-		if (full_path != cmd)
-			free(full_path);
-	}
+            if (full_path != cmd)
+                free(full_path);
+        }
+    }
 }
-
