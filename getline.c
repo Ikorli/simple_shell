@@ -14,6 +14,7 @@ static char *process_input(const char *buffer, int size);
  *
  * Return: A pointer to the line on success, NULL on error or EOF.
  */
+
 char *our_getline(void)
 {
 static char buffer[BUFFER_SIZE];
@@ -22,30 +23,31 @@ static int buffer_size;
 
 while (1)
 {
-/* Read more data into the buffer if needed*/
+/* Read more data into the buffer if needed */
 if (buffer_pos >= buffer_size)
 {
 buffer_size = read_input(buffer, BUFFER_SIZE);
 if (buffer_size <= 0)
 {
-/* Error or end of file*/
+/* Error or end of file */
 return (process_input(buffer, buffer_pos));
 }
 buffer_pos = 0;
 }
 
-/* Process the characters in the buffer*/
+/* Process the characters in the buffer */
 while (buffer_pos < buffer_size)
 {
 char ch = buffer[buffer_pos++];
 if (ch == '\n')
 {
-/* Found the end of the line, return the line*/
+/* Found the end of the line, return the line */
 return (process_input(buffer, buffer_pos));
 }
 }
 }
 }
+
 
 /**
  * read_input - Read data from stdin into the buffer.
@@ -74,18 +76,28 @@ return (bytes_read);
  *
  * Return: Pointer to the line.
  */
+
 static char *process_input(const char *buffer, int size)
 {
+/* Remove trailing newline characters*/
+while (size > 0 && (buffer[size - 1] == '\n' || buffer[size - 1] == '\r'))
+{
+size--;
+}
+
 char *line = malloc(size + 1);
 if (line == NULL)
 {
 perror("malloc");
 exit(EXIT_FAILURE);
 }
+
 memcpy(line, buffer, size);
 line[size] = '\0';
-return (line);
+
+return line;
 }
+
 
 /**
  * great - Entry point of the program.
