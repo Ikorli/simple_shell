@@ -30,15 +30,37 @@ char *get_command_path(char *command);
  */
 void handle_command_line_arguments(int argc, char *argv[])
 {
-int i;
+if (argc < 2)
+{
+/* No command-line arguments provided, print the files in the current directory */
+DIR *dir;
+struct dirent *entry;
+dir = opendir(".");
+if (dir == NULL)
+{
+perror("opendir");
+exit(EXIT_FAILURE);
+}
 
+while ((entry = readdir(dir)) != NULL)
+{
+if (entry->d_type == DT_REG) /* Only print regular files */
+{
+write(STDOUT_FILENO, entry->d_name, strlen(entry->d_name));
+write(STDOUT_FILENO, "\n", 1);
+}
+}
+closedir(dir);
+}
+else
+{
 /* Handle command line arguments for the shell */
+int i;
 for (i = 1; i < argc; i++)
 {
 if (access(argv[i], F_OK) == 0)
 {
 /* Process the option (e.g., display help, set flags, etc.) */
-/* For this example, we will just print the option */
 write(STDOUT_FILENO, "Option: ", 8);
 write(STDOUT_FILENO, argv[i], strlen(argv[i]));
 write(STDOUT_FILENO, "\n", 1);
@@ -52,6 +74,8 @@ write(STDOUT_FILENO, "\n", 1);
 }
 }
 }
+}
+
 
 /**
  * main - Entry point for the simple shell program.
@@ -74,8 +98,6 @@ display_prompt();
 /* Read the user input */
 if (read_command(cmd) == 0)
 {
-/* If read_command returns 0, it means the user entered Ctrl+D (EOF) */
-write(STDOUT_FILENO, "Exiting shell\n", 14);
 break;
 }
 /* Execute the command */
@@ -90,7 +112,7 @@ return (0);
  */
 void display_prompt(void)
 {
-write(STDOUT_FILENO, "OurShell> ", 10);
+write(STDOUT_FILENO, "allowed_functions", 17);
 }
 
 /**
@@ -148,7 +170,6 @@ pid_t pid;
 /* check if the command is the "exit" built-in */
 if (strcmp(cmd, "exit") == 0)
 {
-write(STDOUT_FILENO, "Exiting shell\n", 14);
 exit(0);
 }
 else if (strcmp(cmd, "env") == 0)
