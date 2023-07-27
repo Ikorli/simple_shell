@@ -76,7 +76,8 @@ return (bytes_read);
  *
  * Return: Pointer to the line.
  */
-static char *process_input(const char *buffer, int size)
+
+/*static char *process_input(const char *buffer, int size)
 {
 char *line = malloc(size + 1);
 if (line == NULL)
@@ -87,7 +88,33 @@ exit(EXIT_FAILURE);
 memcpy(line, buffer, size);
 line[size] = '\0';
 return (line);
+}*/
+
+
+static char *process_input(const char *buffer, int size)
+{
+/* Remove trailing newline characters*/
+while (size > 0 && (buffer[size - 1] == '\n' || buffer[size - 1] == '\r'))
+{
+size--;
 }
+
+char *line = malloc(size + 1);
+if (line == NULL)
+{
+perror("malloc");
+exit(EXIT_FAILURE);
+}
+
+memcpy(line, buffer, size);
+line[size] = '\0';
+
+return line;
+}
+
+
+
+
 
 /**
  * great - Entry point of the program.
