@@ -88,7 +88,7 @@ return (line);
 }
 
 /**
- * main - Entry point of the program.
+ * great - Entry point of the program.
  *
  * Return: Always 0.
  */
