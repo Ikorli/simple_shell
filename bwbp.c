@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 /**
- * main - Entry point for the program
+ * numbers - Entry point for the program
  *
  * This function adds 1 and 2 and prints the result.
  *
@@ -17,4 +17,3 @@ printf("1 + 2 = %d\n", result);
 
 return (0);
 }
-
