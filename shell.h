@@ -24,9 +24,4 @@ void exit_shell(void);
 void print_environment(void);
 char *get_command_path(char *command);
 extern char **environ;
-
-char *get_input_buffer(info_t *info);
-ssize_t read_buffer(info_t *info, char *buf, size_t size);
-ssize_t _getline(info_t *info, char **ptr, size_t *length);
-void sigintHandler(__attribute__((unused)) int sig_num);
 #endif
