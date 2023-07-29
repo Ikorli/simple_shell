@@ -15,13 +15,28 @@
 
 #define MAX_COMMAND_LENGHT 100
 
-void display_prompt(void);
-int read_command(char *cmd);
-char **tokenize_command(char *cmd);
-void execute_command(char *cmd);
-void handle_command_line_arguments(int argc, char *argv[]);
-void exit_shell(void);
-void print_environment(void);
-char *get_command_path(char *command);
-extern char **environ;
+
+
+/* Structure for linked list */
+typedef struct list_s
+{
+char *str;
+struct list_s *next;
+list_t;
+}
+
+typedef struct info_s
+{
+list_t *alias; /* Linked list for aliases */
+info_t;
+list_t *history; /* Linked list for history */
+}
+
+/* Function prototypes */
+int _myhistory(info_t *info);
+int unset_alias(info_t *info, char *str);
+int set_alias(info_t *info, char *str);
+int print_alias(list_t *node);
+int _myalias(info_t *info);
+
 #endif
